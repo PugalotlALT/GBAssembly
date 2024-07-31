@@ -12,30 +12,33 @@ SetThumbMode:
 	.thumb
 
 Program:
-	adr r0, DisplayAddress
-	adr r1, Mode3BG2
+	ldr r0,StackAddress
+	mov sp, r0
+
+	ldr r0, DisplayAddress
+	ldr r1, Mode3BG2
 	str r1, [r0,#0]
 	
-	adr r0, VRAMAddress
-	adr r1, Blue
-	adr r2, CanvasSize
+	ldr r0, VRAMAddress
+	ldr r1, Blue
+	ldr r2, CanvasSize
 	
 	
 Loop1:
-	strh r1, [r0,#0]
-	add r0, #2
-	sub r2, r2, #1
-	bne Loop1
+	strh r1,[r0,#2]
 
 Infinite:
 	b Infinite
 	
 	.align 4
 DisplayAddress:
-	.long 0x4000000
+	.long 0x04000000
 	
 VRAMAddress:
-	.long 0x6000000
+	.long 0x06000000
+	
+StackAddress:
+	.long 0x03000000
 	
 Mode3BG2:
 	.int 0x403
