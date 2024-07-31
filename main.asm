@@ -23,22 +23,27 @@ Program:
 	ldr r1, Blue
 	ldr r2, CanvasSize
 	
-	
 Loop1:
-	strh r1,[r0,#2]
+	strh r1,[r0,#0]
+	add r0, r0, #2
+	sub r2, r2, #1
+	bne Loop1
 
 Infinite:
 	b Infinite
 	
 	.align 4
 DisplayAddress:
-	.long 0x04000000
+	.long 0x4000000
+	
+VBLankAddress:
+	.long 0x4000006
 	
 VRAMAddress:
-	.long 0x06000000
+	.long 0x6000000
 	
 StackAddress:
-	.long 0x03000000
+	.long 0x3000000
 	
 Mode3BG2:
 	.int 0x403
