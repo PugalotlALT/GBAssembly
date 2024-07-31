@@ -1,6 +1,6 @@
 .org 0x08000000
 
-b Program
+b SetThumbMode
 
 .include "./header.asm"
 	
@@ -17,10 +17,8 @@ Program:
 	str r1, [r0,#0]
 	
 	adr r0, VRAMAddress
-	mov r1, #0xFF
-	mov r2, #192
-	mov r3, #200
-	mul r2, r3
+	adr r1, Blue
+	adr r2, CanvasSize
 	
 	
 Loop1:
@@ -41,3 +39,9 @@ VRAMAddress:
 	
 Mode3BG2:
 	.int 0x403
+	
+Blue:
+	.long 0b1111111101000000
+	
+CanvasSize:
+	.long 0x9600
