@@ -11,4 +11,4 @@ vasmarm_std_win32.exe main.asm -m7tdmi -noialign -chklabels -nocase -Fbin -o pro
 ```
 
 ## Running
-This code currently only runs under VisualBoyAdvance
+This code should run on most GBA emulators

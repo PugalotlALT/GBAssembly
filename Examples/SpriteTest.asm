@@ -2,7 +2,7 @@
 
 b SetThumbMode
 
-.include "./header.asm"
+.include "./header-new.asm"
 	
 SetThumbMode:
 	adr r0,Program		;Loads the program address
@@ -19,8 +19,8 @@ Program:
 	ldr r1, Mode0BG2
 	str r1, [r0,#0]			;Sets the GBA screen mode to Mode 0 (tiles / backgrounds) on Background 0
 	
-	adr r0, Pallete
-	ldr r1, PalleteAddress
+	adr r0, SpritePallete
+	ldr r1, SpritePalleteAddress
 	mov r2, #32
 	bl Copy16Bit			;Loads palletes to the pallete address
 	
@@ -33,11 +33,11 @@ Program:
 	ldr r1, EnableSprites
 	str r1, [r0,#0]			;Enable sprites
 	
-	
-	mov r0, #0				;Load sprite 0
-	mov r1, #0b01100000		;Attribute 0, sets Y-position
-	mov r2, #0b11000000		;Attribute 1, sets X-position
-	mov r3, #0b00000110		;Attribute 2, sets tile type
+	mov r0, #0					;Address sprite 0
+	mov r1, #0b00001000		;Attribute 0, sets Y-position
+	mov r2, #0b00010001		;Attribute 1, sets X-position
+	mov r3, #0b00000001		;Attribute 2, sets tile type
+	bl SetSprite
 
 Infinite:
 	b Infinite				;Loops forever
@@ -59,13 +59,13 @@ Copy16BitLoop:
 SetSprite:				;Sets the attributes of the sprite in r0 to r1, r2, and r3 respectively
 	push {r0-r7, lr}
 	ldr r4, OAMAddress
-	lsl r0, #3			;Same as multiplying by 8
+	lsl r0, r0, #3			;Same as multiplying by 8
 	add r4, r4, r0
-	strh r1,[r4]
+	strh r1,[r4,#0]
 	add r4, r4, #2
-	strh r1,[r4]
+	strh r2,[r4,#0]
 	add r4, r4, #2
-	strh r1,[r4]
+	strh r3,[r4,#0]
 	add r4, r4, #2
 	pop {r0-r7, pc}
 
@@ -79,7 +79,7 @@ VRAMAddress:
 StackAddress:
 	.long 0x3000000
 	
-PalleteAddress:
+SpritePalleteAddress:
 	.long 0x5000200
 	
 TileAddress:
@@ -95,9 +95,9 @@ Mode0BG2:
 	.int 0x100
 	
 EnableSprites:
-	.int 0x1140
+	.int 0x1040
 	
-Pallete:
+SpritePallete:
 	.word 0b0000000000000000
 	.word 0b0000000000010000
 	.word 0b0000001000000000
@@ -116,6 +116,7 @@ Pallete:
 	.word 0b0111111111111111
 	
 Tiles:
+	.incbin "./Sprites/red.raw"
 	.incbin "./Sprites/smile.raw"
 TilesLength:
 	.long $ - Tiles
