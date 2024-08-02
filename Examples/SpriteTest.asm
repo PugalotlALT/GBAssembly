@@ -39,10 +39,18 @@ WaitForVBlank:
 	cmp r1, #161
 	bne WaitForVBlank
 	
-	mov r0, #0					;Address sprite 0
+	mov r0, #0					;Address object 0
 	mov r1, #0b00001000		;Attribute 0, sets Y-position
 	mov r2, #0b00010001		;Attribute 1, sets X-position
 	mov r3, #0b00000001		;Attribute 2, sets tile type
+	bl SetSprite
+	
+	mov r0, #1					;Address object 1
+	mov r1, #0b00001000		;Attribute 0, sets Y-position
+	ldr r2, TwoByTwoSprite
+	mov r3, #0b11100000
+	orr r2, r3
+	mov r3, #0b00000010		;Attribute 2, sets tile type
 	bl SetSprite
 
 Infinite:
@@ -106,6 +114,9 @@ Mode0BG2:
 EnableSprites:
 	.int 0x1040
 	
+TwoByTwoSprite:
+	.int 0b0100000000000000
+	
 SpritePallete:
 	.word 0b0000000000000000
 	.word 0b0000000000010000
@@ -127,5 +138,6 @@ SpritePallete:
 Tiles:
 	.incbin "./Sprites/blank.raw"
 	.incbin "./Sprites/smile.raw"
+	.incbin "./Sprites/stickman.raw"
 TilesLength:
 	.long $ - Tiles
