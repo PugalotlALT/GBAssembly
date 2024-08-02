@@ -12,3 +12,9 @@ vasmarm_std.exe main.asm -m7tdmi -noialign -chklabels -nocase -Fbin -o program.g
 
 ## Running
 This code should run on most GBA emulators
+
+## Tools
+As well as code, this repository contains some tools to help with making GBA games, such as:
+* ```generate_header.py```
+  + Generates a valid header given the game name, game code and maker code.
+
