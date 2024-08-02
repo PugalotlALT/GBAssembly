@@ -33,6 +33,12 @@ Program:
 	ldr r1, EnableSprites
 	str r1, [r0,#0]			;Enable sprites
 	
+WaitForVBlank:
+	ldr r0, VBLankAddress
+	ldrh r1, [r0,#0]
+	cmp r1, #161
+	bne WaitForVBlank
+	
 	mov r0, #0					;Address sprite 0
 	mov r1, #0b00001000		;Attribute 0, sets Y-position
 	mov r2, #0b00010001		;Attribute 1, sets X-position
@@ -88,6 +94,9 @@ TileAddress:
 BG0ControlAddress:
 	.long 0x4000008
 	
+VBLankAddress:
+	.long 0x4000006
+	
 OAMAddress:
 	.long 0x7000000
 
@@ -116,7 +125,7 @@ SpritePallete:
 	.word 0b0111111111111111
 	
 Tiles:
-	.incbin "./Sprites/red.raw"
+	.incbin "./Sprites/blank.raw"
 	.incbin "./Sprites/smile.raw"
 TilesLength:
 	.long $ - Tiles
