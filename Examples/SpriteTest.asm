@@ -19,15 +19,32 @@ Program:
 	ldr r1, Mode0BG2
 	str r1, [r0,#0]			;Sets the GBA screen mode to Mode 0 (tiles / backgrounds) on Background 0
 	
+	ldr r0, BG0ControlAddress
+	ldr r1, BG0Control
+	str r1, [r0,#0]
+	
 	adr r0, SpritePallete
 	ldr r1, SpritePalleteAddress
 	mov r2, #32
 	bl Copy16Bit			;Loads palletes to the pallete address
 	
+	ldr r1, TilePalleteAddress
+	bl Copy16Bit			;Also loads palletes to the tile address
+	
 	adr r0, Tiles
 	ldr r1, TileAddress
 	ldr r2, TilesLength
 	bl Copy16Bit			;Loads tiles to the tile address
+	
+	adr r0, Tiles
+	ldr r1, BGTileAddress
+	ldr r2, TilesLength
+	bl Copy16Bit			;Loads tiles to the tile address
+	
+	adr r0, TileMap
+	ldr r1, TilemapAddress
+	ldr r2, TileMapLength
+	bl Copy16Bit			;Loads tilemap to the background
 	
 	ldr r0, DisplayAddress
 	ldr r1, EnableSprites
@@ -90,8 +107,14 @@ DisplayAddress:
 VRAMAddress:
 	.long 0x6000000
 	
+BGTileAddress:
+	.long 0x06004000
+	
 StackAddress:
 	.long 0x3000000
+	
+TilePalleteAddress:
+	.long 0x5000000
 	
 SpritePalleteAddress:
 	.long 0x5000200
@@ -99,8 +122,14 @@ SpritePalleteAddress:
 TileAddress:
 	.long 0x6010000
 	
+TilemapAddress:
+	.long 0x6000000
+	
 BG0ControlAddress:
 	.long 0x4000008
+	
+BG0Control:
+	.int 0x0004
 	
 VBLankAddress:
 	.long 0x4000006
@@ -112,10 +141,11 @@ Mode0BG2:
 	.int 0x100
 	
 EnableSprites:
-	.int 0x1040
+	.int 0x1140
 	
 TwoByTwoSprite:
 	.int 0b0100000000000000
+	
 	
 SpritePallete:
 	.word 0b0000000000000000
@@ -139,5 +169,14 @@ Tiles:
 	.incbin "./Sprites/blank.raw"
 	.incbin "./Sprites/smile.raw"
 	.incbin "./Sprites/stickman.raw"
+	.incbin "./Sprites/flower.raw"
 TilesLength:
 	.long $ - Tiles
+	
+TileMap:
+	.word 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	.word 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	.word 0,0,0,0,0,0,0,0,0,0,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	.word 0,0,0,0,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,0,0,0,0,0,0,0,0,0,0
+TileMapLength:
+	.long $ - TileMap
