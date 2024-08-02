@@ -2,7 +2,7 @@
 
 b SetThumbMode
 
-.incbin "./header-new.bin"
+.incbin "./header.bin"
 	
 SetThumbMode:
 	adr r0,Program		;Loads the program address

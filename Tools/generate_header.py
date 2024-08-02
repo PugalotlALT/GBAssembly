@@ -29,14 +29,14 @@ game_name_bytes = game_name.encode('ascii')
 header += game_name_bytes + (2-len(game_name_bytes))*b"\x00"
 
 #Spacing plus mandatory 96h value
-header += b"\x96\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+header += b"\x96\x00\x00\x00\x00\x00\x00"
 
 check_value = 0
 
 for i in header[160:188]:
 	check_value = (check_value - int(i) - 1) % 256 #Calculates the complement check
 	
-header += bytes(check_value)
+header += check_value.to_bytes(1)
 
 header += b"\x00\x00"
 	

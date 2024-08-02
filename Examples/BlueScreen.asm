@@ -2,7 +2,7 @@
 
 b SetThumbMode
 
-.include "./header.asm"
+.incbin "./header.bin"
 	
 SetThumbMode:
 	adr r0,Program		;Loads the program address
