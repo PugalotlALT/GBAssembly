@@ -25,14 +25,14 @@ WaitForVBlank:
 	cmp r4, #161
 	bne WaitForVBlank
 	
+	
 	mov r0, #0					;Address object 1
 	ldr r3, TwoByTwoSprite	;Sets sprite mode to 16x16 (high 8 bits)
 	orr r2, r3				;Attribute 1, combines the sprite mode and position
 	mov r3, #0b00000001		;Attribute 2, sets tile type
 	bl SetSprite
 
-Infinite:
-	b Infinite				;Loops forever
+	b SetSpriteMovement				;Loops forever
 	
 DPADMovement:			;Takes the X-value from r2 and the Y-value from r1 and increments / decrenemts them based on the D-Pad
 	push {r0, r3, lr}
