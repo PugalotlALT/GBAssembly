@@ -20,17 +20,19 @@ SetSpriteMovement:
 	bl DPADMovement
 	
 WaitForVBlank:
-	ldr r0, VBLankAddress
-	ldrh r4, [r0,#0]
-	cmp r4, #161
-	bne WaitForVBlank
+	;ldr r0, VBLankAddress
+	;ldrh r4, [r0,#0]
+	;cmp r4, #161
+	;bne WaitForVBlank
+	swi 5
 	
 	
-	mov r0, #0					;Address object 1
-	ldr r3, TwoByTwoSprite	;Sets sprite mode to 16x16 (high 8 bits)
-	orr r2, r3				;Attribute 1, combines the sprite mode and position
-	mov r3, #0b00000001		;Attribute 2, sets tile type
-	bl SetSprite
+	mov r0, #0		;Use object 0
+					;Takes the X-value from r2
+					;Takes the Y-value from r1
+	mov r3, #1		;Sets the tile type to 1
+	mov r4, #1		;Sets the 2x2 flag to true
+	bl SetSpriteDivTwo		;Draws sprite with X and Y values divided by two
 
 	b SetSpriteMovement				;Loops forever
 	
@@ -38,26 +40,26 @@ DPADMovement:			;Takes the X-value from r2 and the Y-value from r1 and increment
 	push {r0, r3, lr}
 	ldr r0, ButtonAddress
 	ldrh r0, [r0, #0]
-	mov r3, #0b1000000
+	mov r3, #0b10000
 	tst r0, r3
-	beq SkipUp
+	bne SkipRight
+	add r2, r2, #1		;Test bit is set in button, then add, then shift left by one
+SkipRight:
+	lsl r3, r3, #1
+	tst r0, r3
+	bne SkipLeft
+	sub r2, r2, #1
+SkipLeft:
+	lsl r3, r3, #1
+	tst r0, r3
+	bne SkipUp
 	sub r1, r1, #1
 SkipUp:
 	lsl r3, r3, #1
 	tst r0, r3
-	beq SkipDown
+	bne SkipDown
 	add r1, r1, #1
 SkipDown:
-	lsl r3, r3, #1
-	tst r0, r3
-	beq SkipDown
-	add r2, r2, #1
-SkipRight:
-	lsl r3, r3, #1
-	tst r0, r3
-	beq SkipDown
-	sub r2, r2, #1
-SkipLeft:
 	pop {r0, r3, pc}
 	
 	

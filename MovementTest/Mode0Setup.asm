@@ -11,6 +11,31 @@ Copy16BitLoop:
 	
 	pop {r0-r7, pc}		;Restores the registers, setting the PC to the return address
 	
+SetSpriteDivTwo:		;Calls SetSpriteFull with the X and Y divided by two
+	push {r0-r7, lr}
+	lsr r2, r2, #1		;Same as integer division by two
+	lsr r1, r1, #1
+	bl SetSpriteFull
+	pop {r0-r7, pc}
+	
+SetSpriteFull:			;Sets the object at r0 to the X-value of r2, the Y-value of r1 and the sprite of r3 with a flag in r4 for 16x16
+	push {r0-r7, lr}
+	mov r5, #0b11111111
+	lsl r5, r5, #1
+	add r5, r5, #1		;Sets to 9 1's
+	and r3, r5			;Max 9 bits for sprite
+	lsr r5, r5, #1
+	and r2, r5			;Max 8 bits for X
+	lsr r5, r5, #1
+	and r1, r5			;Max 7 bits for Y
+	cmp r4, #0
+	beq SkipTwoByTwo
+	ldr r5, TwoByTwoSprite		;OR's X-value with 2x2 flag for high bits
+	orr r2, r5 
+SkipTwoByTwo:
+	bl SetSprite
+	pop {r0-r7, pc}
+	
 SetSprite:				;Sets the attributes of the sprite in r0 to r1, r2, and r3 respectively
 	push {r0-r7, lr}
 	ldr r4, OAMAddress
