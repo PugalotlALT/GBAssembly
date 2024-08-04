@@ -20,11 +20,10 @@ SetSpriteMovement:
 	bl DPADMovement
 	
 WaitForVBlank:
-	;ldr r0, VBLankAddress
-	;ldrh r4, [r0,#0]
-	;cmp r4, #161
-	;bne WaitForVBlank
-	swi 5
+	ldr r0, VBLankAddress
+	ldrh r4, [r0,#0]
+	cmp r4, #161
+	bne WaitForVBlank
 	
 	
 	mov r0, #0		;Use object 0
@@ -37,7 +36,7 @@ WaitForVBlank:
 	b SetSpriteMovement				;Loops forever
 	
 DPADMovement:			;Takes the X-value from r2 and the Y-value from r1 and increments / decrenemts them based on the D-Pad
-	push {r0, r3, lr}
+	push {r0, r3, r4, lr}
 	ldr r0, ButtonAddress
 	ldrh r0, [r0, #0]
 	mov r3, #0b10000
@@ -60,9 +59,30 @@ SkipUp:
 	bne SkipDown
 	add r1, r1, #1
 SkipDown:
-	pop {r0, r3, pc}
+
+	mov r0, #0
+	cmp r2, r0
+	bge SkipLeftWall
+	add r2, r2, #1
+SkipLeftWall:
+	cmp r1, r0
+	bge SkipTopWall
+	add r1, r1, #1
+SkipTopWall:
+	ldr r0, RightScreenEdge
+	cmp r0, r2
+	bge SkipRightWall
+	sub r2, r2, #1
+SkipRightWall:
+	ldr r0, BottomScreenEdge
+	cmp r0, r1
+	bge SkipBottomWall
+	sub r1, r1, #1
+SkipBottomWall:
+
+	pop {r0, r3, r4, pc}
+	
 	
 	
 .include "./Mode0Setup.asm"
-
 
