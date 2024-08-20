@@ -25,8 +25,8 @@ TileAddress:
 TilemapAddress:
 	.long 0x6000000
 	
-TilemapAddress2:
-	.long 0x6004000
+BG1TilemapAddress:
+	.long 0x6008000
 	
 BG0ControlAddress:
 	.long 0x4000008
@@ -38,7 +38,7 @@ BG1ControlAddress:
 	.long 0x400000A
 	
 BG1Control:
-	.int 0x0004
+	.int 0x0104
 	
 VBLankAddress:
 	.long 0x4000006

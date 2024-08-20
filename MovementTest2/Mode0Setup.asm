@@ -57,11 +57,11 @@ Mode0Setup:
 	
 	ldr r0, BG0ControlAddress
 	ldr r1, BG0Control
-	str r1, [r0,#0]
+	strh r1, [r0,#0]
 
 	ldr r0, BG1ControlAddress
 	ldr r1, BG1Control
-	str r1, [r0,#0]
+	strh r1, [r0,#0]
 
 	adr r0, SpritePallete
 	ldr r1, SpritePalleteAddress
@@ -83,6 +83,12 @@ Mode0Setup:
 	
 	adr r0, TileMap
 	ldr r1, TilemapAddress
+	mov r2, #1
+	lsl r2, r2, #11 ;Gives 2048
+	bl Copy16Bit			;Loads tilemap to the background
+	
+	adrl r0, TileMap2
+	ldr r1, BG1TilemapAddress
 	mov r2, #1
 	lsl r2, r2, #11 ;Gives 2048
 	bl Copy16Bit			;Loads tilemap to the background
