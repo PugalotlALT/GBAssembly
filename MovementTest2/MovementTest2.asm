@@ -13,8 +13,14 @@ SetThumbMode:
 
 Program:
 	bl Mode0Setup			;Sets up sprites and tiles (see Mode0Setup.asm or SpriteTest.asm in BasicExamples)
-	mov r1, #0b00000000
-	mov r2, #0b00000000
+	
+	ldr r0, GUITilemapAddress
+	mov r1, #6
+	str r1, [r0,#0]
+	
+	mov r1, #0
+	mov r2, #0
+	
 	
 SetSpriteMovement:
 	bl DPADMovement
@@ -29,7 +35,7 @@ WaitForVBlank:
 	mov r0, #0		;Use object 0
 					;Takes the X-value from r2
 					;Takes the Y-value from r1
-	mov r3, #1		;Sets the tile type to 1
+	mov r3, #2		;Sets the tile type to 2
 	mov r4, #1		;Sets the 2x2 flag to true
 	bl SetSpriteDivTwo		;Draws sprite with X and Y values divided by two
 

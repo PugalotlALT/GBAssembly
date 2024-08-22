@@ -22,23 +22,23 @@ SpritePalleteAddress:
 TileAddress:
 	.long 0x6010000
 	
-TilemapAddress:
+GUITilemapAddress:
 	.long 0x6000000
 	
-BG1TilemapAddress:
-	.long 0x6008000
+BGTilemapAddress:
+	.long 0x6000800
 	
-BG0ControlAddress:
+GUIControlAddress:
 	.long 0x4000008
 	
-BG0Control:
+GUIControl:
 	.int 0x0004
 	
-BG1ControlAddress:
+BGControlAddress:
 	.long 0x400000A
 	
-BG1Control:
-	.int 0x0104
+BGControl:
+	.int 0x0107
 	
 VBLankAddress:
 	.long 0x4000006
@@ -54,6 +54,9 @@ EnableSprites:
 	
 TwoByTwoSprite:
 	.int 0b0100000000000000
+	
+SpritePriority:
+	.int 0b0000010000000000
 	
 RightScreenEdge:
 	.int 448

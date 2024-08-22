@@ -33,6 +33,8 @@ SetSpriteFull:			;Sets the object at r0 to the X-value of r2, the Y-value of r1 
 	ldr r5, TwoByTwoSprite		;OR's X-value with 2x2 flag for high bits
 	orr r2, r5 
 SkipTwoByTwo:
+	ldr r5, SpritePriority		;Sets sprite's priority to behind BG0
+	orr r3, r5
 	bl SetSprite
 	pop {r0-r7, pc}
 	
@@ -55,12 +57,12 @@ Mode0Setup:
 	ldr r1, Mode0BG2
 	str r1, [r0,#0]			;Sets the GBA screen mode to Mode 0 (tiles / backgrounds) on Background 0
 	
-	ldr r0, BG0ControlAddress
-	ldr r1, BG0Control
+	ldr r0, GUIControlAddress
+	ldr r1, GUIControl
 	strh r1, [r0,#0]
 
-	ldr r0, BG1ControlAddress
-	ldr r1, BG1Control
+	ldr r0, BGControlAddress
+	ldr r1, BGControl
 	strh r1, [r0,#0]
 
 	adr r0, SpritePallete
@@ -82,13 +84,7 @@ Mode0Setup:
 	bl Copy16Bit			;Loads tiles to the tile address
 	
 	adr r0, TileMap
-	ldr r1, TilemapAddress
-	mov r2, #1
-	lsl r2, r2, #11 ;Gives 2048
-	bl Copy16Bit			;Loads tilemap to the background
-	
-	adrl r0, TileMap2
-	ldr r1, BG1TilemapAddress
+	ldr r1, BGTilemapAddress
 	mov r2, #1
 	lsl r2, r2, #11 ;Gives 2048
 	bl Copy16Bit			;Loads tilemap to the background
