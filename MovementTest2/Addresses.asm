@@ -38,8 +38,8 @@ BGControlAddress:
 	.long 0x400000A
 	
 BGControl:
-	.int 0x0105
-	
+	.int 0x0104
+
 VBLankAddress:
 	.long 0x4000006
 	
@@ -56,7 +56,7 @@ TwoByTwoSprite:
 	.int 0b0100000000000000
 	
 SpritePriority:
-	.int 0b0000100000000000
+	.int 0b0000000000000000
 	
 RightScreenEdge:
 	.int 448
