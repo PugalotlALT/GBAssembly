@@ -51,6 +51,21 @@ SetSprite:				;Sets the attributes of the sprite in r0 to r1, r2, and r3 respect
 	add r4, r4, #2
 	pop {r0-r7, pc}
 	
+DisableSprites:
+	push {r0-r7, lr}
+	ldr r0, OAMAddress
+	mov r1, #127
+	ldr r2, DisableSprite
+	
+DisableSpriteLoop:
+	add r0, #8
+	strh r2, [r0,#0]
+	sub r1, #1
+	cmp r1, #0
+	bne DisableSpriteLoop
+	
+	pop {r0-r7, pc}
+	
 Mode0Setup:
 	push {r0-r7, lr}
 	ldr r0, DisplayAddress
@@ -92,6 +107,9 @@ Mode0Setup:
 	ldr r0, DisplayAddress
 	ldr r1, EnableSprites
 	str r1, [r0,#0]			;Enable sprites
+	
+	bl DisableSprites
+	
 	pop {r0-r7, pc}
 	
 	.align 4

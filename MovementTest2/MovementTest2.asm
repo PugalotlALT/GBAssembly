@@ -14,9 +14,18 @@ SetThumbMode:
 Program:
 	bl Mode0Setup			;Sets up sprites and tiles (see Mode0Setup.asm or SpriteTest.asm in BasicExamples)
 	
-	ldr r0, GUITilemapAddress
-	mov r1, #6
-	str r1, [r0,#0]
+	ldr r2, GUITilemapAddress
+	add r2, #10
+	mov r0, #123
+DrawLoop:
+	mov r1, #10
+	swi 6
+	
+	add r1, #15
+	strh r1, [r2,#0]
+	sub r2, #2
+	cmp r0, #0
+	bne DrawLoop
 	
 	mov r1, #0
 	mov r2, #0

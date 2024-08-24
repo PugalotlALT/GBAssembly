@@ -22,6 +22,16 @@ Tiles:
 	.incbin "./Sprites/green.raw"
 	.incbin "./Sprites/frog.raw"
 	.incbin "./Sprites/bgtiles.raw"
+	.incbin "./Sprites/0.raw"
+	.incbin "./Sprites/1.raw"
+	.incbin "./Sprites/2.raw"
+	.incbin "./Sprites/3.raw"
+	.incbin "./Sprites/4.raw"
+	.incbin "./Sprites/5.raw"
+	.incbin "./Sprites/6.raw"
+	.incbin "./Sprites/7.raw"
+	.incbin "./Sprites/8.raw"
+	.incbin "./Sprites/9.raw"
 	
 TilesLength:
 	.long $ - Tiles
