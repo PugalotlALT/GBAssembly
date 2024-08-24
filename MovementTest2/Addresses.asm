@@ -76,3 +76,12 @@ RightScreenEdge:
 	
 BottomScreenEdge:
 	.int 240
+	
+RandomMultiply:
+	.int 1664525
+	
+RandomAdd:
+	.int 1013904223
+	
+RandomAnd:
+	.int 0x7FFF

@@ -15,6 +15,7 @@ Program:
 	mov r0, #127			;Disables the set amount of sprites, with 128 keeping the first, 127 keeping the first two...
 	bl Mode0Setup			;Sets up sprites and tiles (see Mode0Setup.asm or SpriteTest.asm in BasicExamples)
 	
+	
 	;REGISTER LAYOUT
 	;R0			SCORE
 	;R1			PLAYER Y
@@ -24,15 +25,19 @@ Program:
 	mov r0, #0
 	mov r1, #0
 	mov r2, #0
-	mov r3, #0
-	mov r4, #0
+	mov r3, #20
+	mov r4, #20
 	
-	bl DrawScore
+	
 	
 SetSpriteMovement:
 	bl DPADMovement
 	bl WaitForVBlank
 	bl DrawPlayer
+	bl DrawFly
+	bl DrawScore
+	
+	add r0, r0, #1
 
 	b SetSpriteMovement				;Loops forever
 	
@@ -61,7 +66,6 @@ SkipUp:
 	bne SkipDown
 	add r1, r1, #1
 SkipDown:
-
 	mov r0, #0
 	cmp r2, r0
 	bge SkipLeftWall
@@ -84,7 +88,8 @@ SkipBottomWall:
 	pop {r0, r3, r4, pc}
 	
 DrawScore:		;Draws the score from r0 upon the screen
-	push {r0-r2, lr}
+	push {r0-r3, lr}
+	asr r0, r0, #7
 	ldr r2, GUITilemapAddress
 	add r2, #10
 DrawLoop:
@@ -95,7 +100,7 @@ DrawLoop:
 	sub r2, #2
 	cmp r0, #0
 	bne DrawLoop
-	pop {r0-r2, pc}
+	pop {r0-r3, pc}
 	
 WaitForVBlank:		;Awaits VBlank
 	push {r0, r4, lr}
@@ -108,7 +113,7 @@ VBlankLoop:
 	
 DrawPlayer:			;Moves Object 0 using the X and Y from r2 and r1
 	push {r0-r4, lr}
-	mov r0, #1		;Use object 0
+	mov r0, #0		;Use object 0
 					;Takes the X-value from r2
 					;Takes the Y-value from r1
 	mov r3, #2		;Sets the tile type to 2
@@ -126,6 +131,6 @@ DrawFly:
 	bl SetSpriteDivTwo		;Draws sprite with X and Y values divided by two
 	pop {r0-r4, pc}
 	
-	
+
 .include "./Mode0Setup.asm"
 
