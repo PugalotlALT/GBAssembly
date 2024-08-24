@@ -10,31 +10,30 @@ SpritePallete:
 	.word 0b0100101110010101
 	.word 0b0111011100101111
 	.word 0b0111101100111000
-	.word 0b0000001111111111
-	.word 0b0111110000000000
-	.word 0b0111110000011111
-	.word 0b0111111111100000
+	.word 0b0010110110101000
+	.word 0b0100011000110001
+	.word 0b0100111010001101
+	.word 0b0111111111111111
 	.word 0b0111111111111111
 
 	
 Tiles:
-	.incbin "./Sprites/blank.raw"
-	.incbin "./Sprites/green.raw"
-	.incbin "./Sprites/frog.raw"
-	.incbin "./Sprites/bgtiles.raw"
-	.incbin "./Sprites/0.raw"
-	.incbin "./Sprites/1.raw"
-	.incbin "./Sprites/2.raw"
-	.incbin "./Sprites/3.raw"
-	.incbin "./Sprites/4.raw"
-	.incbin "./Sprites/5.raw"
-	.incbin "./Sprites/6.raw"
-	.incbin "./Sprites/7.raw"
-	.incbin "./Sprites/8.raw"
-	.incbin "./Sprites/9.raw"
-	
-TilesLength:
-	.long $ - Tiles
+	.incbin "./Sprites/blank.raw"		;0
+	.incbin "./Sprites/green.raw"		;1
+	.incbin "./Sprites/frog.raw"		;2-5
+	.incbin "./Sprites/bgtiles.raw"		;6-14
+	.incbin "./Sprites/0.raw"			;15
+	.incbin "./Sprites/1.raw"			;16
+	.incbin "./Sprites/2.raw"			;17
+	.incbin "./Sprites/3.raw"			;18
+	.incbin "./Sprites/4.raw"			;19
+	.incbin "./Sprites/5.raw"			;20
+	.incbin "./Sprites/6.raw"			;21
+	.incbin "./Sprites/7.raw"			;22
+	.incbin "./Sprites/8.raw"			;23
+	.incbin "./Sprites/9.raw"			;24
+	.incbin "./Sprites/fly.raw"			;25-28
+TilesEnd:
 	
 TileMap:
 	.word 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1

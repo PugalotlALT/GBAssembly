@@ -45,6 +45,15 @@ VBLankAddress:
 	
 OAMAddress:
 	.long 0x7000000
+	
+OAMEndAddress:
+	.long 0x7000000
+	
+TilesLength:
+	.long TilesEnd - Tiles
+	
+TilemapAddress:
+	.long TileMap
 
 Mode0BG2:
 	.int 0x100

@@ -53,8 +53,13 @@ SetSprite:				;Sets the attributes of the sprite in r0 to r1, r2, and r3 respect
 	
 DisableSprites:
 	push {r0-r7, lr}
+	mov r1, r0
+	mov r3, #128
+	sub r3, r3, r1
+	mov r4, #8
+	mul r3, r4
 	ldr r0, OAMAddress
-	mov r1, #127
+	add r0, r0, r3
 	ldr r2, DisableSprite
 	
 DisableSpriteLoop:
@@ -68,6 +73,9 @@ DisableSpriteLoop:
 	
 Mode0Setup:
 	push {r0-r7, lr}
+	
+	bl DisableSprites
+	
 	ldr r0, DisplayAddress
 	ldr r1, Mode0BG2
 	str r1, [r0,#0]			;Sets the GBA screen mode to Mode 0 (tiles / backgrounds) on Background 0
@@ -98,7 +106,7 @@ Mode0Setup:
 	ldr r2, TilesLength
 	bl Copy16Bit			;Loads tiles to the tile address
 	
-	adr r0, TileMap
+	ldr r0, TilemapAddress
 	ldr r1, BGTilemapAddress
 	mov r2, #1
 	lsl r2, r2, #11 ;Gives 2048
@@ -108,7 +116,7 @@ Mode0Setup:
 	ldr r1, EnableSprites
 	str r1, [r0,#0]			;Enable sprites
 	
-	bl DisableSprites
+	
 	
 	pop {r0-r7, pc}
 	
