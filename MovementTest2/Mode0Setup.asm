@@ -116,8 +116,6 @@ Mode0Setup:
 	ldr r1, EnableSprites
 	str r1, [r0,#0]			;Enable sprites
 	
-	
-	
 	pop {r0-r7, pc}
 	
 	.align 4

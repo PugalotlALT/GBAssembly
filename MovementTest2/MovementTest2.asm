@@ -22,23 +22,30 @@ Program:
 	;R2			PLAYER X
 	;R3			FLY Y
 	;R4			FLY X
+	;R5			COLLISION FLAG
 	mov r0, #0
 	mov r1, #0
 	mov r2, #0
-	mov r3, #20
-	mov r4, #20
-	
-	
+	mov r3, #152
+	mov r4, #232
+	mov r5, #0
 	
 SetSpriteMovement:
 	bl DPADMovement
+	bl MoveFly
+	;bl CheckCollision
+	;cmp r5, #1
+;InfiniteLoop:
+	;beq InfiniteLoop
+	
 	bl WaitForVBlank
+	
 	bl DrawPlayer
 	bl DrawFly
-	bl DrawScore
+	bl CheckDrawScore
+	
 	
 	add r0, r0, #1
-
 	b SetSpriteMovement				;Loops forever
 	
 
@@ -49,41 +56,41 @@ DPADMovement:			;Takes the X-value from r2 and the Y-value from r1 and increment
 	mov r3, #0b10000
 	tst r0, r3
 	bne SkipRight
-	add r2, r2, #1		;Test bit is set in button, then add, then shift left by one
+	add r2, r2, #2		;Test bit is set in button, then add, then shift left by one
 SkipRight:
 	lsl r3, r3, #1
 	tst r0, r3
 	bne SkipLeft
-	sub r2, r2, #1
+	sub r2, r2, #2
 SkipLeft:
 	lsl r3, r3, #1
 	tst r0, r3
 	bne SkipUp
-	sub r1, r1, #1
+	sub r1, r1, #2
 SkipUp:
 	lsl r3, r3, #1
 	tst r0, r3
 	bne SkipDown
-	add r1, r1, #1
+	add r1, r1, #2
 SkipDown:
 	mov r0, #0
 	cmp r2, r0
 	bge SkipLeftWall
-	add r2, r2, #1
+	add r2, r2, #2
 SkipLeftWall:
 	cmp r1, r0
 	bge SkipTopWall
-	add r1, r1, #1
+	add r1, r1, #2
 SkipTopWall:
 	ldr r0, RightScreenEdge
 	cmp r0, r2
 	bge SkipRightWall
-	sub r2, r2, #1
+	sub r2, r2, #2
 SkipRightWall:
 	ldr r0, BottomScreenEdge
 	cmp r0, r1
 	bge SkipBottomWall
-	sub r1, r1, #1
+	sub r1, r1, #2
 SkipBottomWall:
 	pop {r0, r3, r4, pc}
 	
@@ -101,6 +108,17 @@ DrawLoop:
 	cmp r0, #0
 	bne DrawLoop
 	pop {r0-r3, pc}
+	
+CheckDrawScore:		;Draws the score if only the last 7 bits equal 0
+	push {r0-r2, lr}
+	mov r1, #127
+	mov r2, r0
+	and r2, r1
+	cmp r2, #0
+	bne SkipDrawScore
+	bl DrawScore
+SkipDrawScore:
+	pop {r0-r2, pc}
 	
 WaitForVBlank:		;Awaits VBlank
 	push {r0, r4, lr}
@@ -131,6 +149,32 @@ DrawFly:
 	bl SetSpriteDivTwo		;Draws sprite with X and Y values divided by two
 	pop {r0-r4, pc}
 	
+MoveFly:
+	push {r0-r2, lr}
+	cmp r1, r3		;Player Y - Fly Y
+	bge FlyDown
+	sub r3, r3, #1	;Move fly up
+	b FlyContinue
+FlyDown:
+	add r3, r3, #1 	;Move fly down
+FlyContinue:
+
+	cmp r2, r4		;Player X - Fly X
+	bge FlyRight
+	sub r4, r4, #1	;Move fly left
+	b FlyContinue2
+FlyRight:
+	add r4, r4, #1 	;Move fly right
+FlyContinue2:
+	pop {r0-r2, pc}
+	
+CheckCollision:		;Checks if there is a collision between the player and the fly
+	push {r0-r4, lr}
+	sub r0, r1, r4
+	mov r1, #32
+	cmp r0, r1
+	;TO COMPLETE
+	pop {r0-r4, pc}
 
 .include "./Mode0Setup.asm"
 
