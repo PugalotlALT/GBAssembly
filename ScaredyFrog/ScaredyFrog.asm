@@ -16,6 +16,7 @@ Program:
 	bl Mode0Setup			;Sets up sprites and tiles (see Mode0Setup.asm or SpriteTest.asm in BasicExamples)
 	
 TitleScreenStart:
+	bl EnableTitle
 	mov r1, #0b1000
 	ldr r0, ButtonAddress
 TitleScreen:
@@ -89,7 +90,7 @@ SkipDown:
 	cmp r2, r0
 	bge SkipLeftWall
 	add r2, r2, #2
-SkipLeftWall:
+SkipLeftWall:		;Checks if player has collided with a wall and if so, move in the opposite direction
 	cmp r1, r0
 	bge SkipTopWall
 	add r1, r1, #2
@@ -106,7 +107,7 @@ SkipRightWall:
 SkipBottomWall:
 	pop {r0, r3, r4, pc}
 	
-QuickDiv10:
+QuickDiv10:				;A hack to get the number in r0 divided by 10 and the remainder in r1 faster than using a syscall
 	push {r2-r3, lr}
 	mov r2, r0
 	ldr r1, Div10Multiply
@@ -174,7 +175,7 @@ DrawFly:
 	bl SetSpriteDivTwo		;Draws sprite with X and Y values divided by two
 	pop {r0-r4, pc}
 	
-MoveFly:
+MoveFly:			;Moves the fly towards the player
 	push {r0-r2, lr}
 	cmp r1, r3		;Player Y - Fly Y
 	bge FlyDown
@@ -198,26 +199,26 @@ CheckCollision:		;Checks if there is a collision between the player and the fly
 	mov r6, #0
 	mov r7, #0
 	sub r0, r1, r3
-	mov r1, #8
+	mov r1, #16
 	cmp r0, r1
 	bge SkipHorizontal
 	neg r1, r1
 	cmp r0, r1
 	ble SkipHorizontal
-	mov r5, #1
+	mov r5, #1			;Checks if the distance between the Xs is between -32 and 32
 SkipHorizontal:
 
 	sub r0, r2, r4
-	mov r1, #8
+	mov r1, #16
 	cmp r0, r1
 	bge SkipVertical
 	neg r1, r1
 	cmp r0, r1
 	ble SkipVertical
-	mov r6, #1
+	mov r6, #1			;Checks if the distance between the Ys is between -32 and 32
 SkipVertical:
 
-	and r5, r6
+	and r5, r6			;Checks if both conditions are met
 	pop {r0-r4, r6, pc}
 
 .include "./Mode0Setup.asm"

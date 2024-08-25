@@ -51,7 +51,7 @@ SetSprite:				;Sets the attributes of the sprite in r0 to r1, r2, and r3 respect
 	add r4, r4, #2
 	pop {r0-r7, pc}
 	
-DisableSprites:
+DisableSprites:			;Disable sprites in OAM
 	push {r0-r7, lr}
 	mov r1, r0
 	mov r3, #128
@@ -71,7 +71,7 @@ DisableSpriteLoop:
 	
 	pop {r0-r7, pc}
 	
-GetTileAddress:
+GetTileAddress:			;Uses the number in r0 to get the tilemap in memory at that index
 	push {r1-r3, lr}
 	ldr r1, TilemapAddress
 	ldr r2, TilemapLength
