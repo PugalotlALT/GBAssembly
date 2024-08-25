@@ -14,7 +14,7 @@ vasmarm_std.exe main.asm -m7tdmi -noialign -chklabels -nocase -Fbin -o program.g
 This code should run on most GBA emulators such as [mGBA](https://mgba.io/), or through your browser using [Gbajs3](https://gba.nicholas-vancise.dev/)
 
 ## Games
-Currently there is one working game, Scaredy Frog. This game involves trying to avoid an angry fly with the DPad, using Start to begin the game
+Currently there is one working game, Scaredy Frog. This game involves trying to avoid an angry fly with the DPad, using Start to begin the game.
 
 ![A recording of Scaredy Frog](./ScaredyFrogRecording.gif)
 
