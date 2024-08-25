@@ -1,4 +1,4 @@
-# ![GBAssembly](./GBAssembly.png)
+# ![GBAssembly](https://github.com/PugalotlALT/GBAssembly/blob/main/GBAssembly.png?raw=true)
 GBAssembly: A pun of GBA and Assembly (not Assembly for the GameBoy)
 
 An attempt at making a GBA program in Assembly. Currently has examples for Bitmap (Mode 3) and Sprites (Mode 0).
@@ -16,7 +16,7 @@ This code should run on most GBA emulators such as [mGBA](https://mgba.io/), or 
 ## Games
 Currently there is one working game, Scaredy Frog. This game involves trying to avoid an angry fly with the DPad, using Start to begin the game.
 
-![A recording of Scaredy Frog](./ScaredyFrogRecording.gif)
+![A recording of Scaredy Frog](https://github.com/PugalotlALT/GBAssembly/blob/main/ScaredyFrogRecording.gif?raw=true)
 
 ## Tools
 As well as code, this repository contains some tools to help with making GBA games, such as:
