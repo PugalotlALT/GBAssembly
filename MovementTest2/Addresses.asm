@@ -28,17 +28,26 @@ GUITilemapAddress:
 BGTilemapAddress:
 	.long 0x6000800
 	
+TitleTilemapAddress:
+	.long 0x6001000
+	
 GUIControlAddress:
 	.long 0x4000008
 	
 GUIControl:
-	.int 0x0004
+	.int 0x0005
 	
 BGControlAddress:
 	.long 0x400000A
 	
 BGControl:
-	.int 0x0106
+	.int 0x0107
+	
+TitleControlAddress:
+	.long 0x400000C
+	
+TitleControl:
+	.int 0x0204
 
 VBLankAddress:
 	.long 0x4000006
@@ -54,18 +63,24 @@ TilesLength:
 	
 TilemapAddress:
 	.long TileMap
+	
+TilemapLength:
+	.int 1276
 
 Mode0BG2:
 	.int 0x100
 	
-EnableSprites:
+EnableSpritesTitle:
+	.int 0x1740
+	
+EnableSpritesNoTitle:
 	.int 0x1340
 	
 TwoByTwoSprite:
 	.int 0b0100000000000000
 	
 SpritePriority:
-	.int 0b0000010000000000
+	.int 0b0000100000000000
 	
 DisableSprite:
 ;	.int 0b0000000100000000
@@ -85,3 +100,4 @@ RandomAdd:
 	
 RandomAnd:
 	.int 0x7FFF
+	

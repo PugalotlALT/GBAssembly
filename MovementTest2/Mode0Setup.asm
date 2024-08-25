@@ -71,6 +71,21 @@ DisableSpriteLoop:
 	
 	pop {r0-r7, pc}
 	
+GetTileAddress:
+	push {r1-r3, lr}
+	ldr r1, TilemapAddress
+	ldr r2, TilemapLength
+	mul r0, r2
+	add r0, r1, r0
+	pop {r1-r3, pc}
+	
+EnableTitle:
+	push {r0-r1, lr}
+	ldr r0, DisplayAddress
+	ldr r1, EnableSpritesTitle
+	str r1, [r0,#0]			;Enable sprites and title screen
+	pop {r0-r1, pc}
+	
 Mode0Setup:
 	push {r0-r7, lr}
 	
@@ -86,6 +101,10 @@ Mode0Setup:
 
 	ldr r0, BGControlAddress
 	ldr r1, BGControl
+	strh r1, [r0,#0]
+	
+	ldr r0, TitleControlAddress
+	ldr r1, TitleControl
 	strh r1, [r0,#0]
 
 	adr r0, SpritePallete
@@ -106,15 +125,21 @@ Mode0Setup:
 	ldr r2, TilesLength
 	bl Copy16Bit			;Loads tiles to the tile address
 	
-	ldr r0, TilemapAddress
+	mov r0, #0
+	bl GetTileAddress
+	
 	ldr r1, BGTilemapAddress
-	mov r2, #1
-	lsl r2, r2, #11 ;Gives 2048
+	ldr r2, TilemapLength
 	bl Copy16Bit			;Loads tilemap to the background
 	
-	ldr r0, DisplayAddress
-	ldr r1, EnableSprites
-	str r1, [r0,#0]			;Enable sprites
+	mov r0, #1
+	bl GetTileAddress
+	
+	ldr r1, TitleTilemapAddress
+	ldr r2, TilemapLength
+	bl Copy16Bit			;Loads tile screen
+	
+	bl EnableTitle
 	
 	pop {r0-r7, pc}
 	

@@ -23,20 +23,23 @@ Program:
 	;R3			FLY Y
 	;R4			FLY X
 	;R5			COLLISION FLAG
+	;R6 / R7	UNUSED
 	mov r0, #0
 	mov r1, #0
 	mov r2, #0
 	mov r3, #152
 	mov r4, #232
 	mov r5, #0
+	mov r6, #0
+	mov r7, #0
 	
 SetSpriteMovement:
 	bl DPADMovement
 	bl MoveFly
-	;bl CheckCollision
-	;cmp r5, #1
-;InfiniteLoop:
-	;beq InfiniteLoop
+	bl CheckCollision
+InfiniteLoop:
+	cmp r5, #1
+	beq InfiniteLoop
 	
 	bl WaitForVBlank
 	
@@ -169,12 +172,31 @@ FlyContinue2:
 	pop {r0-r2, pc}
 	
 CheckCollision:		;Checks if there is a collision between the player and the fly
-	push {r0-r4, lr}
-	sub r0, r1, r4
-	mov r1, #32
+	push {r0-r4, r6, lr}
+	mov r6, #0
+	mov r7, #0
+	sub r0, r1, r3
+	mov r1, #8
 	cmp r0, r1
-	;TO COMPLETE
-	pop {r0-r4, pc}
+	bge SkipHorizontal
+	neg r1, r1
+	cmp r0, r1
+	ble SkipHorizontal
+	mov r5, #1
+SkipHorizontal:
+
+	sub r0, r2, r4
+	mov r1, #8
+	cmp r0, r1
+	bge SkipVertical
+	neg r1, r1
+	cmp r0, r1
+	ble SkipVertical
+	mov r6, #1
+SkipVertical:
+
+	and r5, r6
+	pop {r0-r4, r6, pc}
 
 .include "./Mode0Setup.asm"
 
