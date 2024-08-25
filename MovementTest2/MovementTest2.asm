@@ -15,6 +15,16 @@ Program:
 	mov r0, #127			;Disables the set amount of sprites, with 128 keeping the first, 127 keeping the first two...
 	bl Mode0Setup			;Sets up sprites and tiles (see Mode0Setup.asm or SpriteTest.asm in BasicExamples)
 	
+TitleScreenStart:
+	mov r1, #0b1000
+	ldr r0, ButtonAddress
+TitleScreen:
+	ldrh r2, [r0, #0]
+	tst r2, r1
+	bne TitleScreen
+	
+	bl DisableTitle
+	
 	
 	;REGISTER LAYOUT
 	;R0			SCORE
@@ -37,9 +47,8 @@ SetSpriteMovement:
 	bl DPADMovement
 	bl MoveFly
 	bl CheckCollision
-InfiniteLoop:
 	cmp r5, #1
-	beq InfiniteLoop
+	beq TitleScreenStart
 	
 	bl WaitForVBlank
 	
@@ -97,14 +106,27 @@ SkipRightWall:
 SkipBottomWall:
 	pop {r0, r3, r4, pc}
 	
+QuickDiv10:
+	push {r2-r3, lr}
+	mov r2, r0
+	ldr r1, Div10Multiply
+	mul r0, r1
+	ldr r1, Div10Shift
+	asr r0, r1
+	mov r1, r0
+	mov r3, #10
+	mul r1, r3
+	sub r2, r2, r1
+	mov r1, r2
+	pop {r2-r3, pc}
+	
 DrawScore:		;Draws the score from r0 upon the screen
 	push {r0-r3, lr}
 	asr r0, r0, #7
 	ldr r2, GUITilemapAddress
 	add r2, #10
 DrawLoop:
-	mov r1, #10
-	swi 6
+	bl QuickDiv10
 	add r1, #15
 	strh r1, [r2,#0]
 	sub r2, #2

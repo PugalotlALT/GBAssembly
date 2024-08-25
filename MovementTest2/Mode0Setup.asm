@@ -86,6 +86,13 @@ EnableTitle:
 	str r1, [r0,#0]			;Enable sprites and title screen
 	pop {r0-r1, pc}
 	
+DisableTitle:
+	push {r0-r1, lr}
+	ldr r0, DisplayAddress
+	ldr r1, EnableSpritesNoTitle
+	str r1, [r0,#0]			;Enable sprites and title screen
+	pop {r0-r1, pc}
+	
 Mode0Setup:
 	push {r0-r7, lr}
 	

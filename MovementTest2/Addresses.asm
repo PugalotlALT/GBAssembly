@@ -65,7 +65,7 @@ TilemapAddress:
 	.long TileMap
 	
 TilemapLength:
-	.int 1276
+	.int 1280
 
 Mode0BG2:
 	.int 0x100
@@ -100,4 +100,10 @@ RandomAdd:
 	
 RandomAnd:
 	.int 0x7FFF
+	
+Div10Multiply:
+	.int 3277
+	
+Div10Shift:
+	.int 15
 	
